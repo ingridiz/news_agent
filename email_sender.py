@@ -36,7 +36,7 @@ def send_email(recipient: str, subject: str, body_html: str) -> None:
     msg["To"] = recipient
     msg["Subject"] = subject
 
-    # Wraps the Claude-generated HTML in a basic email template
+    # Wraps the AI-generated HTML in a basic email template
     full_html = f"""\
 <!DOCTYPE html>
 <html>
