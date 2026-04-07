@@ -1,6 +1,6 @@
 # News Agent
 
-Agente automatizado que busca notícias diárias sobre tópicos de interesse, gera resumos inteligentes com a **Claude API** e envia por email via **Gmail SMTP**.
+Agente automatizado que busca notícias diárias sobre tópicos de interesse, gera resumos inteligentes com a **Gemini API** (Google) e envia por email via **Gmail SMTP**.
 
 ## Tópicos Configurados
 
@@ -10,7 +10,7 @@ Agente automatizado que busca notícias diárias sobre tópicos de interesse, ge
 ## Como Funciona
 
 1. **Busca notícias** usando a [NewsAPI](https://newsapi.org/) para cada tópico configurado
-2. **Gera um resumo** inteligente usando a Claude API (Anthropic)
+2. **Gera um resumo** inteligente usando a Gemini API (Google)
 3. **Envia por email** via Gmail SMTP com formatação HTML profissional
 4. **Executa automaticamente** todo dia às 7h UTC via GitHub Actions
 
@@ -19,7 +19,7 @@ Agente automatizado que busca notícias diárias sobre tópicos de interesse, ge
 ### 1. Obter API Keys
 
 - **NewsAPI**: Cadastre-se em [newsapi.org](https://newsapi.org/) para obter uma chave gratuita
-- **Anthropic (Claude)**: Obtenha sua API key em [console.anthropic.com](https://console.anthropic.com/)
+- **Gemini (Google)**: Obtenha sua API key em [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
 - **Gmail App Password**: Gere uma senha de app em [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
   - Necessário ter verificação em 2 etapas ativada na conta Google
 
@@ -29,7 +29,7 @@ Vá em **Settings > Secrets and variables > Actions** no repositório e adicione
 
 | Secret | Descrição |
 |--------|-----------|
-| `ANTHROPIC_API_KEY` | Chave da API da Anthropic (Claude) |
+| `GEMINI_API_KEY` | Chave da API do Gemini (Google) |
 | `NEWSAPI_KEY` | Chave da API do NewsAPI |
 | `GMAIL_ADDRESS` | Seu endereço Gmail (ex: `seuemail@gmail.com`) |
 | `GMAIL_APP_PASSWORD` | Senha de app do Gmail (16 caracteres) |
@@ -49,7 +49,7 @@ O workflow já está configurado para rodar automaticamente. Você também pode 
 pip install -r requirements.txt
 
 # Configurar variáveis de ambiente
-export ANTHROPIC_API_KEY="sua-chave"
+export GEMINI_API_KEY="sua-chave"
 export NEWSAPI_KEY="sua-chave"
 export GMAIL_ADDRESS="seu-email@gmail.com"
 export GMAIL_APP_PASSWORD="sua-senha-de-app"
@@ -71,7 +71,7 @@ Edite o arquivo `topics.py` para adicionar ou remover tópicos de interesse. Cad
 
 ```
 news_agent/
-├── main.py              # Busca notícias + chama Claude API
+├── main.py              # Busca notícias + chama Gemini API
 ├── email_sender.py      # Envia via Gmail SMTP
 ├── topics.py            # Tópicos de interesse
 ├── requirements.txt     # Dependências Python

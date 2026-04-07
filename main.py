@@ -1,5 +1,5 @@
 """
-News Agent - Busca notícias e gera resumos com a Claude API.
+News Agent - Busca notícias e gera resumos com a Gemini API.
 """
 
 import os
@@ -8,7 +8,7 @@ import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta
 
-import anthropic
+import google.generativeai as genai
 
 from topics import TOPICS
 from email_sender import send_email
@@ -59,9 +59,10 @@ def fetch_news(topic: dict) -> list[dict]:
     ]
 
 
-def summarize_with_claude(all_news: dict[str, list[dict]]) -> str:
-    """Usa a Claude API para gerar um resumo das notícias agrupadas por tópico."""
-    client = anthropic.Anthropic()
+def summarize_with_gemini(all_news: dict[str, list[dict]]) -> str:
+    """Usa a Gemini API para gerar um resumo das notícias agrupadas por tópico."""
+    genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+    model = genai.GenerativeModel("gemini-2.0-flash")
 
     news_text = ""
     for topic_name, articles in all_news.items():
@@ -94,13 +95,9 @@ Inclua um cabeçalho com a data de hoje: {datetime.utcnow().strftime("%d/%m/%Y")
 Notícias do dia:
 {news_text}"""
 
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    response = model.generate_content(prompt)
 
-    return message.content[0].text
+    return response.text
 
 
 def main():
@@ -115,9 +112,9 @@ def main():
         all_news[topic["name"]] = articles
         print(f"[INFO] Encontradas {len(articles)} notícias para '{topic['name']}'")
 
-    # 2. Gerar resumo com Claude
-    print("[INFO] Gerando resumo com Claude...")
-    summary = summarize_with_claude(all_news)
+    # 2. Gerar resumo com Gemini
+    print("[INFO] Gerando resumo com Gemini...")
+    summary = summarize_with_gemini(all_news)
     print("[INFO] Resumo gerado com sucesso!")
 
     # 3. Enviar por email
