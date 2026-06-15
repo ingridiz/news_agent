@@ -13,3 +13,6 @@ env/
 
 # Rascunhos e mídia gerada localmente
 drafts/
+
+# Config local do Zernio (profile/conta conectada)
+.zernio.json

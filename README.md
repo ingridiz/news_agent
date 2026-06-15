@@ -37,11 +37,21 @@ news_agent/
    | `ZERNIO_API_KEY` | Chave da API do Zernio (`sk_...`). Settings → API Keys |
    | `GEMINI_API_KEY` | Chave do Gemini (só para gerar legenda com IA) |
 
-3. **Conectar o Instagram no Zernio** (uma vez): criar um *profile*, conectar a
-   conta **Business/Creator** via OAuth e anotar o `_id` da conta.
+3. **Conectar o Instagram no Zernio** (uma vez), via `zernio_setup.py`:
+
+   ```bash
+   python zernio_setup.py doctor                              # diagnóstico
+   python zernio_setup.py create-profile --name "Minha Marca" --save
+   python zernio_setup.py connect --platform instagram        # abra a URL no navegador
+   python zernio_setup.py accounts --save                     # salva o _id da conta IG
+   ```
+
+   A conta conectada fica salva em `.zernio.json` (gitignored) e o `post.py`
+   passa a usá-la automaticamente. A conta precisa ser **Business/Creator**.
 
 > **Atenção (ambiente remoto):** se rodar pelo Claude Code na web, adicione
 > `zernio.com` ao *allowlist* de egress do ambiente para liberar as chamadas à API.
+> O comando `doctor` detecta esse bloqueio e avisa.
 
 ## Uso
 

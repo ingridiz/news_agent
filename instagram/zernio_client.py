@@ -60,6 +60,27 @@ class ZernioClient:
         except ValueError:
             return resp.text
 
+    # --- Profiles ---------------------------------------------------------
+    def list_profiles(self):
+        """Lista os profiles (GET /v1/profiles)."""
+        return self._request("GET", "/v1/profiles")
+
+    def create_profile(self, name: str, description: str | None = None):
+        """Cria um profile (POST /v1/profiles). Devolve o objeto com ``_id``."""
+        body: dict = {"name": name}
+        if description:
+            body["description"] = description
+        return self._request("POST", "/v1/profiles", json=body)
+
+    def get_connect_url(self, platform: str, profile_id: str):
+        """Devolve a URL de OAuth para conectar uma conta a um profile.
+
+        GET /v1/connect/{platform}?profileId=...  ->  { authUrl }
+        """
+        return self._request(
+            "GET", f"/v1/connect/{platform}", params={"profileId": profile_id}
+        )
+
     # --- Contas -----------------------------------------------------------
     def list_accounts(self):
         """Lista as contas sociais conectadas (GET /v1/accounts)."""

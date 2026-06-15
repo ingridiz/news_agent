@@ -29,22 +29,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from instagram.config import load_dotenv, load_config
+
 DRAFTS_DIR = Path(__file__).parent / "drafts"
-
-
-def _load_dotenv() -> None:
-    """Carrega variáveis do .env (sem dependência externa)."""
-    env_path = Path(__file__).parent / ".env"
-    if not env_path.exists():
-        return
-    for line in env_path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, _, value = line.partition("=")
-        import os
-
-        os.environ.setdefault(key.strip(), value.strip())
 
 
 def build_visuals(args) -> list[str]:
@@ -85,7 +72,7 @@ def build_caption(args) -> str:
 
 
 def main() -> int:
-    _load_dotenv()
+    load_dotenv()
     p = argparse.ArgumentParser(description="Postagem no Instagram via Zernio")
     p.add_argument("--brief", help="Briefing curto para gerar legenda/visual")
     p.add_argument("--caption", help="Legenda explícita (pula a IA)")
@@ -144,7 +131,7 @@ def main() -> int:
 
     try:
         client = ZernioClient()
-        account_id = args.account_id
+        account_id = args.account_id or load_config().get("instagram_account_id")
         if not account_id and not args.dry_run:
             acc = client.find_instagram_account()
             if not acc:
