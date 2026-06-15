@@ -95,7 +95,10 @@ def main() -> int:
                    help="Imagem de fundo do card, ex.: gerada no Magnific (repita p/ carrossel)")
     p.add_argument("--format", default="feed",
                    choices=["feed", "carousel", "reel", "story"])
-    p.add_argument("--mode", default="draft", choices=["draft", "now", "schedule"])
+    p.add_argument("--mode", default="draft",
+                   choices=["draft", "zdraft", "now", "schedule"],
+                   help="draft=preview local | zdraft=rascunho no Zernio (não publica) "
+                        "| now=publica já | schedule=agenda")
     p.add_argument("--when", help="Horário ISO 8601 para --mode schedule (ex.: 2026-06-16T09:00:00)")
     p.add_argument("--timezone", default="America/Sao_Paulo",
                    help="Fuso do agendamento (default: America/Sao_Paulo)")

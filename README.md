@@ -71,6 +71,7 @@ python post.py ... --dry-run
 | `--slide` | Texto de um card (repita para carrossel) |
 | `--media` | Arquivo de mídia já pronto (repita) |
 | `--format` | `feed` \| `carousel` \| `reel` \| `story` |
-| `--mode` | `draft` \| `now` \| `schedule` |
+| `--mode` | `draft` (preview local) \| `zdraft` (rascunho no Zernio, não publica) \| `now` \| `schedule` |
+| `--background` | Imagem de fundo do card, ex.: gerada no Magnific (repita p/ carrossel) |
 | `--when` / `--timezone` | Horário e fuso do agendamento |
 | `--dry-run` | Mostra o payload sem publicar |
