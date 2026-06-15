@@ -57,15 +57,21 @@ def build_visuals(args) -> list[str]:
 
     work = DRAFTS_DIR / args.slug / "media"
     work.mkdir(parents=True, exist_ok=True)
-    style = dict(handle=args.handle, kicker=args.kicker)
+    backgrounds = args.background or None  # imagens de fundo (ex.: Magnific)
 
     if args.format == "carousel":
         slides = args.slide or [args.brief or "Sem texto"]
-        return visuals.render_carousel(slides, work, **style)
+        return visuals.render_carousel(
+            slides, work, backgrounds=backgrounds,
+            handle=args.handle, kicker=args.kicker,
+        )
 
     text = (args.slide[0] if args.slide else None) or args.brief or "Sem texto"
     out = work / "card.jpg"
-    return [visuals.render_card(text, out, fmt=args.format, **style)]
+    return [visuals.render_card(
+        text, out, fmt=args.format, handle=args.handle, kicker=args.kicker,
+        background_image=(backgrounds[0] if backgrounds else None),
+    )]
 
 
 def build_caption(args) -> str:
@@ -85,6 +91,8 @@ def main() -> int:
     p.add_argument("--caption", help="Legenda explícita (pula a IA)")
     p.add_argument("--slide", action="append", help="Texto de um card (repita p/ carrossel)")
     p.add_argument("--media", action="append", help="Arquivo de mídia já pronto (repita)")
+    p.add_argument("--background", action="append",
+                   help="Imagem de fundo do card, ex.: gerada no Magnific (repita p/ carrossel)")
     p.add_argument("--format", default="feed",
                    choices=["feed", "carousel", "reel", "story"])
     p.add_argument("--mode", default="draft", choices=["draft", "now", "schedule"])
