@@ -10,3 +10,6 @@ venv/
 env/
 *.egg
 .eggs/
+
+# Rascunhos e mídia gerada localmente
+drafts/
